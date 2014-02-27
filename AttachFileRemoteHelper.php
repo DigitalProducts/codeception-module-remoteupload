@@ -35,8 +35,7 @@ class AttachFileWebDriver extends WebDriver
 class AttachFileRemoteHelper extends \Codeception\Module
 {
     /**
-     * This function zips the file that has to be transfered
-     * and returns the base64 encoded content.
+     * This function zips the file that has to be transfered and returns the base64 encoded content.
      *
      * @param filename $value
      * @param the file extension $file_extension
@@ -78,12 +77,10 @@ class AttachFileRemoteHelper extends \Codeception\Module
     }
 
     /**
-     * This function uploads a file to the remote server and
-     * returns the remote filename. This filename can be used when
-     * attaching a file on a website.
+     * This function uploads a file to the remote server and returns the remote filename. 
+     * This filename can be used when attaching a file on a website.
      *
-     * @param string $filename the name of the file that will
-     *                         bei uploaded
+     * @param string $filename the name of the file that will be uploaded
      * @return string the remote file name
      */
     private function uploadRemoteFile ($filename)
@@ -102,8 +99,7 @@ class AttachFileRemoteHelper extends \Codeception\Module
     }
 
     /**
-     * This function attaches a file even if using a remote connection
-     * via WebDriver / Selenium Server
+     * This function attaches a file even if using a remote connection via WebDriver / Selenium Server
      * 
      * @param string $field the field locator
      * @param string $filename the filename in the data directory
