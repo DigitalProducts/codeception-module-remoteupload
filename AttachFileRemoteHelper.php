@@ -12,22 +12,15 @@ namespace Codeception\Module;
 
 
 /**
- * This class is only used to get access to the findField() method from the webDriver class. If that 
+ * This class is only used to get access to the findField() method from the webDriver class. If that
  * method was public a much cleaner inplementation was possible. But it works, so I guss it's a good place
  * to start.
  */
 class AttachFileWebDriver extends WebDriver
 {
-    public $myWebDriver;
-
-    public function __construct($webdriver=null)
+    public function fillFieldWithoutClear($field, $value, WebDriver $webDriver)
     {
-        $this->myWebDriver = $webdriver;
-    }
-
-    public function fillField($field, $value)
-    {
-        $el = $this->myWebDriver->findField($field);
+        $el = $webDriver->findField($field);
         $el->sendKeys($value);
     }
 }
@@ -37,33 +30,33 @@ class AttachFileRemoteHelper extends \Codeception\Module
     /**
      * This function zips the file that has to be transfered and returns the base64 encoded content.
      *
-     * @param filename $value
+     * @param filename $filename
      * @param the file extension $file_extension
      * @throws \Exception
      * @return string the remote file name
      */
-    private function getZippedFile ($value, $file_extension = "")
+    private function getZippedFile ($filename, $file_extension = "")
     {
         $zip = new \ZipArchive();
 
-        $filename_hash = sha1(time() . $value);
+        $filename_hash = sha1(time() . $filename);
 
         $zip_filename = "{$filename_hash}_zip.zip";
         if ($zip->open($zip_filename, \ZipArchive::CREATE) === false) {
             throw new \Exception('file_get_contents failed');
         }
 
-        $file_data = @file_get_contents($value);
+        $file_data = @file_get_contents($filename);
         if ($file_data === false) {
-            throw new \Exception('Can\'t open file '.$value);
+            throw new \Exception('Can\'t open file '.$filename);
         }
 
-        $filename = "{$filename_hash}.{$file_extension}";
-        if (@file_put_contents($filename, $file_data) === false) {
+        $tmpFilename = "{$filename_hash}.{$file_extension}";
+        if (@file_put_contents($tmpFilename, $file_data) === false) {
             throw new \Exception('Unable to store temporary file.');
         }
 
-        $zip->addFile($filename, "{$filename_hash}.{$file_extension}");
+        $zip->addFile($tmpFilename, "{$filename_hash}.{$file_extension}");
         $zip->close();
 
         $zip_file = @file_get_contents($zip_filename);
@@ -71,13 +64,16 @@ class AttachFileRemoteHelper extends \Codeception\Module
             throw new \Exception('Unable to open created zip file');
         }
 
-        $zippedFile = base64_encode($zip_file);
+        $zipFileContent = base64_encode($zip_file);
 
-        return $zippedFile;
+        unlink($zip_filename);
+        unlink($tmpFilename);
+
+        return $zipFileContent;
     }
 
     /**
-     * This function uploads a file to the remote server and returns the remote filename. 
+     * This function uploads a file to the remote server and returns the remote filename.
      * This filename can be used when attaching a file on a website.
      *
      * @param string $filename the name of the file that will be uploaded
@@ -86,7 +82,7 @@ class AttachFileRemoteHelper extends \Codeception\Module
     private function uploadRemoteFile ($filename)
     {
         $codeCWebdriver = $this->getModule("WebDriver");
-        // @var \RemoteWebDriver $codeCWebdriver 
+        // @var \RemoteWebDriver $codeCWebdriver
 
         $executor = $codeCWebdriver->webDriver->getCommandExecutor();
         /* @var \WebDriverCommandExecutor $executor */
@@ -100,7 +96,7 @@ class AttachFileRemoteHelper extends \Codeception\Module
 
     /**
      * This function attaches a file even if using a remote connection via WebDriver / Selenium Server
-     * 
+     *
      * @param string $field the field locator
      * @param string $filename the filename in the data directory
      */
@@ -108,7 +104,7 @@ class AttachFileRemoteHelper extends \Codeception\Module
     {
         $remoteFileName = $this->uploadRemoteFile($filename);
 
-        $webDriver = new AttachFileWebDriver($this->getModule("WebDriver"));
-        $webDriver->fillField((string)$field, $remoteFileName);
+        $webDriver = new AttachFileWebDriver();
+        $webDriver->fillFieldWithoutClear((string)$field, $remoteFileName, $this->getModule("WebDriver"));
     }
 }
