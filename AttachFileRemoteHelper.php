@@ -20,8 +20,7 @@ class AttachFileWebDriver extends WebDriver
 {
     public function fillFieldWithoutClear($field, $value, WebDriver $webDriver)
     {
-        $el = $webDriver->findField($field);
-        $el->sendKeys($value);
+        $webDriver->findField($field)->sendKeys($value);
     }
 }
 
