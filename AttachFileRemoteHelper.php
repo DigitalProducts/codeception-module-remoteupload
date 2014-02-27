@@ -94,6 +94,13 @@ class AttachFileRemoteHelper extends \Codeception\Module
         return (string)$remoteFileName;
     }
 
+    /**
+     * This function attaches a file even if using a remote connection
+     * via WebDriver / Selenium Server
+     * 
+     * @params string $field the field locator
+     * @params string $filename the filename in the data directory
+     */
     public function attachFileRemote($field, $filename)
     {
         $remoteFileName = $this->uploadRemoteFile($filename);
