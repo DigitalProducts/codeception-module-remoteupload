@@ -10,7 +10,7 @@ Just copy the file to your project and add it to your bootstrap file:
 <code>include_once "/path/to/module/AttachFileRemoteHelper.php";</code>
 
 ### Configuration
-After editing your bootstrap file you have to upade your test suite configuration
+After editing your bootstrap file you have to update your test suite configuration
 
 ```
 modules:
