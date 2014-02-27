@@ -1,4 +1,5 @@
 <?php
+
 namespace Codeception\Module;
 
 /*
@@ -88,7 +89,7 @@ class AttachFileRemoteHelper extends \Codeception\Module
     private function uploadRemoteFile ($filename)
     {
         $codeCWebdriver = $this->getModule("WebDriver");
-        // @var $codeCWebdriver RemoteWebDriver
+        // @var \RemoteWebDriver $codeCWebdriver 
 
         $executor = $codeCWebdriver->webDriver->getCommandExecutor();
         /* @var \WebDriverCommandExecutor $executor */
