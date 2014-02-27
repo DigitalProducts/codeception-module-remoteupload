@@ -1,6 +1,6 @@
 # Codeception Remote File Attachment Helper
 
-This module helps to upload files when using webdriver via remote connection when using codeception. 
+This module helps to upload files when using webdriver via remote connection when using [codeception](http://www.codeception.com/ "Codeception"). 
 
 ## Getting started
 
