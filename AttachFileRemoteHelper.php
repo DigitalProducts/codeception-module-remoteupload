@@ -5,10 +5,16 @@ namespace Codeception\Module;
  * Based on:
  * http://stackoverflow.com/questions/10559728/uploading-files-remotely-on-selenium-webdriver-using-php/10560052#10560052
  *
- * @author Nils Langne <nils.langner@thewebhatesme.com>
+ * @author Nils Langner <nils.langner@thewebhatesme.com>
  *
  */
 
+
+/**
+ * This class is only used to get access to the findField() method from the webDriver class. If that 
+ * method was public a much cleaner inplementation was possible. But it works, so I guss it's a good place
+ * to start.
+ */
 class AttachFileWebDriver extends WebDriver
 {
     public $myWebDriver;
