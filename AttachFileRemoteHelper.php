@@ -85,9 +85,12 @@ class AttachFileRemoteHelper extends \Codeception\Module
 
         $executor = $codeCWebdriver->webDriver->getCommandExecutor();
         /* @var \WebDriverCommandExecutor $executor */
+        
+        $path_parts = pathinfo($filename);
+        $file_extension = $path_parts['extension'];
 
         $remoteFileName = $executor->execute("sendFile", array(
-                "file" => $this->getZippedFile(realpath(\Codeception\Configuration::dataDir() . $filename))
+                "file" => $this->getZippedFile(realpath(\Codeception\Configuration::dataDir() . $filename), $file_extension)
         ));
 
         return (string)$remoteFileName;
