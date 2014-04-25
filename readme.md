@@ -29,7 +29,7 @@ php codecept.phar build
 
 ## Usage
 
-Once the module is actived you are able to use the new method <code>attachFileRemote</code> the same way you are using the native codeption/webdriver method arrachFile.
+Once the module is actived you are able to use the new method <code>attachFileRemote</code> the same way you are using the native codeception/webdriver method attachFile.
 
 ```php
 <?php
